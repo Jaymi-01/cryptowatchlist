@@ -1,50 +1,108 @@
-# Welcome to your Expo app 👋
+# Crypto Watchlist
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A premium, dark-themed React Native (Expo) application for tracking cryptocurrency market data. This app features real-time price updates, a persistent favorites watchlist, and a polished user interface.
 
-## Get started
+## 🌟 Key Features
 
-1. Install dependencies
+*   **Dark Mode & Pure Black Theme:** Optimized for OLED screens with a sleek, battery-saving pure black (`#000000`) background.
+*   **Live Market Data:** Fetches real-time cryptocurrency data from the CoinGecko API.
+*   **Favorites Watchlist:** Persists your favorite coins using `AsyncStorage`, so your list is saved between sessions.
+*   **Search & Filter:** Instantly filter coins by name or symbol and toggle between "All Coins" and "My Watchlist".
+*   **Pull to Refresh:** Easy manual data updates with a pull-down gesture.
+*   **Premium Loading State:** Uses pulsing skeleton loaders for a smooth, app-like feel instead of basic spinners.
+*   **Robust Error Handling:** Safely handles missing data (like nullable price changes) to prevent crashes.
 
-   ```bash
-   npm install
-   ```
+## 🚀 Getting Started
 
-2. Start the app
+### Prerequisites
 
-   ```bash
-   npx expo start
-   ```
+*   **Node.js** (LTS recommended)
+*   **pnpm** (Package manager used in this project)
+*   **Expo Go** app on your iOS or Android device (for testing)
 
-In the output, you'll find options to open the app in a
+### Installation
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/your-username/cryptowatchlist.git
+    cd cryptowatchlist
+    ```
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+2.  **Install dependencies:**
+    ```bash
+    pnpm install
+    # or
+    npx expo install
+    ```
 
-## Get a fresh project
+3.  **Start the development server:**
+    ```bash
+    npx expo start
+    ```
 
-When you're ready, run:
+4.  **Run on device:**
+    *   Scan the QR code with your Android (Expo Go) or iOS (Camera) device.
+    *   Press `a` for Android Emulator or `i` for iOS Simulator.
 
-```bash
-npm run reset-project
+## 📂 Project Structure
+
+```text
+cryptowatchlist/
+├── app/
+│   ├── _layout.tsx       # Root layout, theme, and Context providers
+│   └── index.tsx         # Main screen with FlatList, search, and filtering
+├── components/
+│   ├── CoinItem.tsx      # Reusable row component for each coin
+│   ├── SkeletonItem.tsx  # Individual loading skeleton row
+│   └── SkeletonLoader.tsx # List of skeletons for loading state
+├── context/
+│   └── FavoritesContext.tsx # Global state management for favorites (with persistence)
+├── services/
+│   └── coinGecko.ts      # API service for fetching market data
+├── assets/               # Images and icons
+├── app.json              # Expo configuration (themes, icons, splash screen)
+└── package.json          # Dependencies and scripts
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 🛠️ Important Development Notes
 
-## Learn more
+### 1. Data Fetching & API
+*   The app uses the public **CoinGecko API**.
+*   **Note:** The public API has rate limits. If you encounter rate limiting errors (HTTP 429), waiting a minute usually resolves it.
+*   Data types are defined in `services/coinGecko.ts`. Always handle potentially null values (e.g., `price_change_percentage_24h`).
 
-To learn more about developing your project with Expo, look at the following resources:
+### 2. State Management
+*   **FavoritesContext:** Manages the list of favorite coin IDs.
+*   **Persistence:** Uses `@react-native-async-storage/async-storage` to save favorites locally on the device.
+*   When adding new global state, consider extending this Context pattern.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### 3. Styling & Theme
+*   The app enforces a **Dark Mode** user interface style in `app.json`.
+*   **Colors:**
+    *   Background: `#000000` (Pure Black)
+    *   Surface/Border: `#1a1a1a`
+    *   Text: `#ffffff`
+    *   Positive Change: `#4caf50`
+    *   Negative Change: `#ff5252`
+    *   Gold (Star): `#FFD700`
 
-## Join the community
+### 4. Performance Optimization
+*   **FlatList:** Used for efficient list rendering.
+*   **Memoization:** `useCallback` is used for the refresh handler to prevent unnecessary re-renders.
+*   **Images:** Network images are cached by the device's image loader automatically.
 
-Join our community of developers creating universal apps.
+### 5. Troubleshooting
+*   **"Cannot redefine property: default"**: If you encounter this error with vector icons or navigation, ensure you are using named imports (e.g., `import { Ionicons } from '@expo/vector-icons'`) and avoid conflicting versions of `react-native-safe-area-context`.
+*   **Package Manager:** This project uses `pnpm`. Avoid mixing `npm` or `yarn` lockfiles to prevent dependency conflicts.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 🤝 Contributing
+
+1.  Fork the repository.
+2.  Create a feature branch (`git checkout -b feature/amazing-feature`).
+3.  Commit your changes (`git commit -m 'feat: add amazing feature'`).
+4.  Push to the branch (`git push origin feature/amazing-feature`).
+5.  Open a Pull Request.
+
+## 📄 License
+
+This project is licensed under the MIT License.
